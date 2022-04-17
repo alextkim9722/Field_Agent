@@ -107,6 +107,13 @@ begin
 	alter table agency auto_increment = 1;
     delete from agent;
     alter table agent auto_increment = 1;
+    delete from security_clearance;
+    alter table security_clearance auto_increment = 1;
+    
+    -- data
+	insert into security_clearance values
+		(1, 'Secret'),
+		(2, 'Top Secret');
     
     insert into agency(agency_id, short_name, long_name) values
         (1, 'ACME', 'Agency to Classify & Monitor Evildoers'),
@@ -150,8 +157,3 @@ begin
 end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;
-
--- data
-insert into security_clearance values
-	(1, 'Secret'),
-    (2, 'Top Secret');

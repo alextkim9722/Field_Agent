@@ -286,8 +286,6 @@ DELETE http://localhost:8080/api/alias/1 HTTP/1.1
 ### [ ] Controller (1.0 hour)
 
 * `AliasController`
-  * findAll()
-  * findById()
   * add()
   * update()
   * deleteById()
@@ -321,15 +319,11 @@ _Refer to the `AgentService` class and use that as an example for the methods to
 
 * `AliasMapper` (class)
 * `AliasJdbcTemplateRepository` (class)
-  * findAll()
-  * findById()
   * add()
   * update()
   * deleteById()
 * `AliasRepository` (interface)
 * `AliasJdbcTemplateRepositoryTest` (test class)
-  * shouldFindAll()
-  * shouldFindById()
   * shouldAdd()
   * shouldUpdate()
   * shouldDelete()
@@ -345,8 +339,6 @@ _Refer to the `AgentJdbcTemplateRepository` class and use that as an example for
   * Specific exceptions to handle:
     * For unchecked exceptions (more specific):
       * IllegalArgumentException
-      * BadRequestException (need to create a class for this that extends RunTimeException)
-      * NotFoundException (need to create a class for this that extends RunTimeException)
 * For all other exceptions, create a general "sorry, not sorry" response that doesn't share exception details.
   * For unchecked exceptions:
     * DataAccessException
