@@ -35,8 +35,10 @@ class SecurityClearanceJdbcTemplateRepositoryTest {
 
     @Test
     void shouldFindById() {
-        SecurityClearance secret = new SecurityClearance(1, "Secret");
-        SecurityClearance topSecret = new SecurityClearance(2, "Top Secret");
+        SecurityClearance secret = new SecurityClearance("Secret");
+        secret.setSecurityClearanceId(1);
+        SecurityClearance topSecret = new SecurityClearance("Top Secret");
+        topSecret.setSecurityClearanceId(2);
 
         SecurityClearance actual = repository.findById(1);
         assertEquals(secret, actual);
@@ -64,6 +66,11 @@ class SecurityClearanceJdbcTemplateRepositoryTest {
     void shouldDelete() {
         assertTrue(repository.deleteById(3));
         assertFalse(repository.deleteById(3));
+    }
+
+    @Test
+    void shouldReturnProperConnections() {
+        assertEquals(12, repository.getConnections());
     }
 
     private SecurityClearance makeSecurityClearance() {

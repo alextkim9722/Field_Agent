@@ -1,8 +1,8 @@
 package learn.field_agent.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import learn.field_agent.data.SecurityClearanceRepository;
-import learn.field_agent.models.SecurityClearance;
+import learn.field_agent.data.AliasRepository;
+import learn.field_agent.models.Alias;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,10 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SecurityClearanceControllerTest {
+public class AliasControllerTest {
 
     @MockBean
-    SecurityClearanceRepository repository;
+    AliasRepository repository;
 
     @Autowired
     MockMvc mvc;
@@ -30,7 +30,7 @@ public class SecurityClearanceControllerTest {
     @Test
     void addShouldReturn400WhenEmpty() throws Exception {
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/alias")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -42,12 +42,12 @@ public class SecurityClearanceControllerTest {
 
         ObjectMapper jsonMapper = new ObjectMapper();
 
-        SecurityClearance securityClearance = new SecurityClearance();
-        String securityJson = jsonMapper.writeValueAsString(securityClearance);
+        Alias alias = new Alias();
+        String aliasJson = jsonMapper.writeValueAsString(alias);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/alias")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(securityJson);
+                .content(aliasJson);
 
         mvc.perform(request)
                 .andExpect(status().isBadRequest());
@@ -59,12 +59,12 @@ public class SecurityClearanceControllerTest {
 
         ObjectMapper jsonMapper = new ObjectMapper();
 
-        SecurityClearance securityClearance = new SecurityClearance("O5");
-        String securityJson = jsonMapper.writeValueAsString(securityClearance);
+        Alias alias = new Alias("Pickle", "It's a dill pickle.", 1);
+        String aliasJson = jsonMapper.writeValueAsString(alias);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/alias")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .content(securityJson);
+                .content(aliasJson);
 
         mvc.perform(request)
                 .andExpect(status().isUnsupportedMediaType());
@@ -73,18 +73,18 @@ public class SecurityClearanceControllerTest {
     @Test
     void addShouldReturn201() throws Exception {
 
-        SecurityClearance securityClearance = new SecurityClearance("O5");
-        SecurityClearance expected = new SecurityClearance("O5");
+        Alias alias = new Alias("Pickle", "It's a dill pickle.", 1);
+        Alias expected = new Alias("Pickle", "It's a dill pickle.", 1);
 
         when(repository.add(any())).thenReturn(expected);
         ObjectMapper jsonMapper = new ObjectMapper();
 
-        String securityJson = jsonMapper.writeValueAsString(securityClearance);
+        String aliasJson = jsonMapper.writeValueAsString(alias);
         String expectedJson = jsonMapper.writeValueAsString(expected);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/alias")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(securityJson);
+                .content(aliasJson);
 
         mvc.perform(request)
                 .andExpect(status().isCreated())

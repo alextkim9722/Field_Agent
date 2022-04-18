@@ -59,6 +59,7 @@ public class SecurityClearanceService {
         if(repository.getConnections() > 0) {
             String msg = String.format("securityId: %s, has several children", securityId);
             result.addMessage(msg, ResultType.INVALID);
+            return result;
         }
 
         if(!repository.deleteById(securityId)) {

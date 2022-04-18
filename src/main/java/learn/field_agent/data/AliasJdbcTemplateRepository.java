@@ -1,6 +1,9 @@
 package learn.field_agent.data;
 
+import learn.field_agent.data.mappers.AliasMapper;
+import learn.field_agent.data.mappers.SecurityClearanceMapper;
 import learn.field_agent.models.Alias;
+import learn.field_agent.models.SecurityClearance;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class AliasJdbcTemplateRepository implements AliasRepository{
@@ -17,8 +21,15 @@ public class AliasJdbcTemplateRepository implements AliasRepository{
     public AliasJdbcTemplateRepository(JdbcTemplate jdbcTemplate){ this.jdbcTemplate = jdbcTemplate; }
 
     @Override
+    public List<Alias> findByAgent(int agentId) {
+        final String sql = "select alias_id, `name` alias_name, persona, agent_id  "
+                + "from alias where agent_id = ?;";
+        return jdbcTemplate.query(sql, new AliasMapper(), agentId);
+    }
+
+    @Override
     public Alias add(Alias alias) {
-        final String sql = "insert into alias (name, persona, agent_id) "
+        final String sql = "insert into alias (`name`, persona, agent_id) "
                 + " values (?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -42,7 +53,7 @@ public class AliasJdbcTemplateRepository implements AliasRepository{
     public boolean update(Alias alias) {
         final String sql = "update alias set "
                 + "name = ?, "
-                + "persona = ?, "
+                + "persona = ? "
                 + "where alias_id = ?;";
 
         return jdbcTemplate.update(sql,

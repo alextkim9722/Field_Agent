@@ -8,8 +8,7 @@ public class Alias {
 
     public Alias() {}
 
-    public Alias(int aliasId, String name, String persona, int agentId) {
-        this.aliasId = aliasId;
+    public Alias(String name, String persona, int agentId) {
         this.name = name;
         this.persona = persona;
         this.agentId = agentId;

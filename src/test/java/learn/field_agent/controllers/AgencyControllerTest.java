@@ -90,5 +90,4 @@ class AgencyControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(expectedJson));
     }
-
 }

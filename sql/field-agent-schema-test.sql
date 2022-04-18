@@ -102,6 +102,8 @@ begin
 
 	delete from location;
     alter table location auto_increment = 1;
+    delete from alias;
+    alter table alias auto_increment = 1;
     delete from agency_agent;
 	delete from agency;
 	alter table agency auto_increment = 1;
@@ -154,6 +156,15 @@ begin
     where agent.agent_id not in (6, 8)
     and agency.agency_id != 2;
 
+	insert into alias (`name`, persona, agent_id)
+    values
+		('Bart', null, 1),
+        ('Bart', null, 1),
+        ('Karen', 'Bart', 2),
+        ('Karen', 'Bork', 2),
+        ('Larry', null, 1),
+        ('Carl', null, 1),
+        ('David', null, 1);
 end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;

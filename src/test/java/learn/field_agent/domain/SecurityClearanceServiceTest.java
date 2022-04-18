@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +23,6 @@ public class SecurityClearanceServiceTest {
 
     @Test
     void shouldfindById() {
-        // pass-through test, probably not useful
         SecurityClearance expected = makeSecurityClearance();
         when(repository.findById(1)).thenReturn(expected);
         SecurityClearance actual = service.findById(1);
@@ -55,10 +57,13 @@ public class SecurityClearanceServiceTest {
     @Test
     void shouldNotAddWhenNameIsDuplicate() {
         SecurityClearance securityClearanceA = makeSecurityClearance();
+        securityClearanceA.setSecurityClearanceId(1);
         SecurityClearance securityClearanceB = makeSecurityClearance();
         securityClearanceB.setSecurityClearanceId(2);
+        List<SecurityClearance> securityClearanceList = new ArrayList<>();
 
-        service.add(securityClearanceA);
+        securityClearanceList.add(securityClearanceA);
+        when(repository.findAll()).thenReturn(securityClearanceList);
         Result<SecurityClearance> result = service.add(securityClearanceB);
         assertEquals(ResultType.INVALID, result.getType());
     }
@@ -76,6 +81,13 @@ public class SecurityClearanceServiceTest {
     void shouldNotDeleteWhenDoesNotExist() {
         Result<SecurityClearance> result = service.deleteById(2);
         assertEquals(ResultType.NOT_FOUND, result.getType());
+    }
+
+    @Test
+    void shouldNotDeleteWhenConnectionsExist() {
+        when(repository.getConnections()).thenReturn(12);
+        Result<SecurityClearance> result = service.deleteById(1);
+        assertEquals(ResultType.INVALID, result.getType());
     }
 
     SecurityClearance makeSecurityClearance() {
