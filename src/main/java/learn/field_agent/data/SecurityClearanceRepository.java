@@ -17,5 +17,5 @@ public interface SecurityClearanceRepository {
     @Transactional
     boolean deleteById(int securityId);
 
-    int getConnections();
+    int getConnections(int securityId);
 }

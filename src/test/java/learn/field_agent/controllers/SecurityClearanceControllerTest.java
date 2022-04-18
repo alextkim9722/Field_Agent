@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,9 +29,19 @@ public class SecurityClearanceControllerTest {
     MockMvc mvc;
 
     @Test
+    void getShouldReturn404() throws Exception {
+
+        var request = get("/api/security/clearance/999")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void addShouldReturn400WhenEmpty() throws Exception {
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/security/clearance")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request)
@@ -45,7 +56,7 @@ public class SecurityClearanceControllerTest {
         SecurityClearance securityClearance = new SecurityClearance();
         String securityJson = jsonMapper.writeValueAsString(securityClearance);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/security/clearance")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(securityJson);
 
@@ -62,7 +73,7 @@ public class SecurityClearanceControllerTest {
         SecurityClearance securityClearance = new SecurityClearance("O5");
         String securityJson = jsonMapper.writeValueAsString(securityClearance);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/security/clearance")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .content(securityJson);
 
@@ -72,7 +83,6 @@ public class SecurityClearanceControllerTest {
 
     @Test
     void addShouldReturn201() throws Exception {
-
         SecurityClearance securityClearance = new SecurityClearance("O5");
         SecurityClearance expected = new SecurityClearance("O5");
 
@@ -82,7 +92,7 @@ public class SecurityClearanceControllerTest {
         String securityJson = jsonMapper.writeValueAsString(securityClearance);
         String expectedJson = jsonMapper.writeValueAsString(expected);
 
-        var request = post("/api/securityClearance")
+        var request = post("/api/security/clearance")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(securityJson);
 

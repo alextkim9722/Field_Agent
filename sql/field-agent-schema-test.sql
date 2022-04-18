@@ -115,7 +115,8 @@ begin
     -- data
 	insert into security_clearance values
 		(1, 'Secret'),
-		(2, 'Top Secret');
+		(2, 'Top Secret'),
+        (3, 'Not Secret');
     
     insert into agency(agency_id, short_name, long_name) values
         (1, 'ACME', 'Agency to Classify & Monitor Evildoers'),

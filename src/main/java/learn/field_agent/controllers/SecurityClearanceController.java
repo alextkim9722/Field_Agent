@@ -6,12 +6,13 @@ import learn.field_agent.models.SecurityClearance;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"})
-@RequestMapping("/api/securityClearance")
+@RequestMapping("/api/security/clearance")
 public class SecurityClearanceController {
     private final SecurityClearanceService service;
 
@@ -25,8 +26,12 @@ public class SecurityClearanceController {
     }
 
     @GetMapping("/{securityId}")
-    public SecurityClearance findById(@PathVariable int securityId) {
-        return service.findById(securityId);
+    public ResponseEntity<Object> findById(@PathVariable int securityId) throws NoHandlerFoundException {
+        Result<SecurityClearance> result = service.findById(securityId);
+        if (result.isSuccess()) {
+            return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        }
+        return ErrorResponse.build(result);
     }
 
     @PostMapping

@@ -11,6 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -89,5 +92,26 @@ public class AliasControllerTest {
         mvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void addShouldReturn400WhenDuped() throws Exception{
+
+        Alias alias = new Alias("Pickle", null, 1);
+        Alias dupe = new Alias("Pickle", null, 1);
+
+        List<Alias> existing = new ArrayList<>();
+        existing.add(alias);
+
+        when(repository.findByAgent(1)).thenReturn(existing);
+        ObjectMapper jsonMapper = new ObjectMapper();
+        String aliasJson = jsonMapper.writeValueAsString(dupe);
+
+        var request = post("/api/alias")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aliasJson);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 }

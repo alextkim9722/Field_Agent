@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class SecurityClearanceJdbcTemplateRepositoryTest {
 
-    final static int NEXT_ID = 3;
+    final static int NEXT_ID = 4;
 
     @Autowired
     SecurityClearanceJdbcTemplateRepository repository;
@@ -70,7 +70,12 @@ class SecurityClearanceJdbcTemplateRepositoryTest {
 
     @Test
     void shouldReturnProperConnections() {
-        assertEquals(12, repository.getConnections());
+        assertEquals(12, repository.getConnections(1));
+    }
+
+    @Test
+    void shouldReturnNoConnections() {
+        assertEquals(0, repository.getConnections(3));
     }
 
     private SecurityClearance makeSecurityClearance() {

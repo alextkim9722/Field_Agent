@@ -67,10 +67,20 @@ public class AliasService {
             result.addMessage("name is required", ResultType.INVALID);
         }
 
-        for(Alias currentAlias : aliases) {
-            if(currentAlias.getName().equalsIgnoreCase(alias.getName())
-                    && currentAlias.getPersona().equalsIgnoreCase(alias.getPersona())) {
-                result.addMessage("Alias has a duplicate", ResultType.INVALID);
+        if (aliases != null){
+            for (Alias currentAlias : aliases) {
+                if(currentAlias.getName().equalsIgnoreCase(alias.getName())
+                && Validations.isNullOrBlank(currentAlias.getPersona())
+                && Validations.isNullOrBlank(alias.getPersona()))
+                {
+                    result.addMessage("Alias requires a persona", ResultType.INVALID);
+                }
+                if(currentAlias.getPersona() != null && alias.getPersona() != null) {
+                    if (currentAlias.getName().equalsIgnoreCase(alias.getName())
+                            && currentAlias.getPersona().equalsIgnoreCase(alias.getPersona())) {
+                        result.addMessage("Alias has a duplicate", ResultType.INVALID);
+                    }
+                }
             }
         }
 

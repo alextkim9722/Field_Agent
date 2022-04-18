@@ -14,8 +14,16 @@ public class SecurityClearanceService {
 
     public List<SecurityClearance> findAll(){ return repository.findAll(); }
 
-    public SecurityClearance findById(int securityId) {
-        return repository.findById(securityId);
+    public Result<SecurityClearance> findById(int securityId) {
+        Result<SecurityClearance> result = new Result<>();
+        SecurityClearance securityClearance = repository.findById(securityId);
+        if(securityClearance == null) {
+            result.addMessage("Security Clearance is not found.", ResultType.NOT_FOUND);
+            return result;
+        }
+
+        result.setPayload(securityClearance);
+        return result;
     }
 
     public Result<SecurityClearance> add(SecurityClearance securityClearance) {
@@ -56,7 +64,7 @@ public class SecurityClearanceService {
     public Result<SecurityClearance> deleteById(int securityId) {
         Result<SecurityClearance> result = new Result<>();
 
-        if(repository.getConnections() > 0) {
+        if(repository.getConnections(securityId) > 0) {
             String msg = String.format("securityId: %s, has several children", securityId);
             result.addMessage(msg, ResultType.INVALID);
             return result;

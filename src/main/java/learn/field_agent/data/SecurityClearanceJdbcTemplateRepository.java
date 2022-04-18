@@ -80,8 +80,8 @@ public class SecurityClearanceJdbcTemplateRepository implements SecurityClearanc
     }
 
     @Override
-    public int getConnections() {
-        final String sql = "select count(*) from agency_agent where security_clearance_id = 1;";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+    public int getConnections(int securityId) {
+        final String sql = "select count(*) from agency_agent where security_clearance_id = ?;";
+        return jdbcTemplate.queryForObject(sql, new Object[] { securityId }, Integer.class);
     }
 }

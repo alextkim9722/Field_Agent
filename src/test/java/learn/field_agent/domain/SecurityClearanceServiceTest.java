@@ -25,8 +25,8 @@ public class SecurityClearanceServiceTest {
     void shouldfindById() {
         SecurityClearance expected = makeSecurityClearance();
         when(repository.findById(1)).thenReturn(expected);
-        SecurityClearance actual = service.findById(1);
-        assertEquals(expected, actual);
+        Result<SecurityClearance> result = service.findById(1);
+        assertEquals(expected, result.getPayload());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class SecurityClearanceServiceTest {
 
     @Test
     void shouldNotDeleteWhenConnectionsExist() {
-        when(repository.getConnections()).thenReturn(12);
+        when(repository.getConnections(1)).thenReturn(12);
         Result<SecurityClearance> result = service.deleteById(1);
         assertEquals(ResultType.INVALID, result.getType());
     }
