@@ -26,8 +26,7 @@ public class SecurityClearance {
     public SecurityClearance() {
     }
 
-    public SecurityClearance(int securityClearanceId, String name) {
-        this.securityClearanceId = securityClearanceId;
+    public SecurityClearance(String name) {
         this.name = name;
     }
 

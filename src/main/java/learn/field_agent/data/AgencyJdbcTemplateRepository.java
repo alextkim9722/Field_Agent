@@ -113,5 +113,4 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
         var agencyAgents = jdbcTemplate.query(sql, new AgencyAgentMapper(), agency.getAgencyId());
         agency.setAgents(agencyAgents);
     }
-
 }
